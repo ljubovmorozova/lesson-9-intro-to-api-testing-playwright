@@ -58,10 +58,10 @@ test('delete order with incorrect id should receive code 400', async ({ request 
     api_key: process.env.API_KEY ?? '1234567890123456',
   }
 
-  const responseOrderId0 = await request.delete(`${BASE_URL}/0`)
-  const responseOrderId11 = await request.delete(`${BASE_URL}/11`)
-  const responseOrderIdNull = await request.delete(`${BASE_URL}/null`)
-  const responseOrderIdTest = await request.delete(`${BASE_URL}/test`)
+  const responseOrderId0 = await request.delete(`${BASE_URL}/0`,  { headers })
+  const responseOrderId11 = await request.delete(`${BASE_URL}/11`,  { headers })
+  const responseOrderIdNull = await request.delete(`${BASE_URL}/null`,  { headers })
+  const responseOrderIdTest = await request.delete(`${BASE_URL}/test`,  { headers })
 
   expect(responseOrderId0.status()).toBe(StatusCodes.BAD_REQUEST)
   expect(responseOrderId11.status()).toBe(StatusCodes.BAD_REQUEST)
@@ -99,6 +99,10 @@ test('put order with correct id should receive 200', async ({ request }) => {
 })
 
 test('put order with incorrect id should receive 400', async ({ request }) => {
+  const headers = {
+    Accept: '*/*',
+    api_key: process.env.API_KEY ?? '1234567890123456',
+  }
   const requestBody = {
     status: 'OPEN',
     courierId: 1,
@@ -108,38 +112,22 @@ test('put order with incorrect id should receive 400', async ({ request }) => {
   }
 
   const resId0 = await request.put(`${BASE_URL}/0`, {
-    headers: {
-      Accept: '*/*',
-      'Content-Type': 'application/json',
-      api_key: process.env.API_KEY ?? '1234567890123456',
-    },
+    headers: headers,
     data: requestBody,
   })
 
   const resId11 = await request.put(`${BASE_URL}/11`, {
-    headers: {
-      Accept: '*/*',
-      'Content-Type': 'application/json',
-      api_key: process.env.API_KEY ?? '1234567890123456',
-    },
+    headers: headers,
     data: requestBody,
   })
 
   const resIdNull = await request.put(`${BASE_URL}/`, {
-    headers: {
-      Accept: '*/*',
-      'Content-Type': 'application/json',
-      api_key: process.env.API_KEY ?? '1234567890123456',
-    },
+    headers: headers,
     data: requestBody,
   })
 
   const resIdTest = await request.put(`${BASE_URL}/test`, {
-    headers: {
-      Accept: '*/*',
-      'Content-Type': 'application/json',
-      api_key: process.env.API_KEY ?? '1234567890123456',
-    },
+    headers: headers,
     data: requestBody,
   })
 
