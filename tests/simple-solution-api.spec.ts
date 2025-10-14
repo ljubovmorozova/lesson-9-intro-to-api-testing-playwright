@@ -58,10 +58,10 @@ test('delete order with incorrect id should receive code 400', async ({ request 
     api_key: process.env.API_KEY ?? '1234567890123456',
   }
 
-  const responseOrderId0 = await request.delete(`${BASE_URL}/0`,  { headers })
-  const responseOrderId11 = await request.delete(`${BASE_URL}/11`,  { headers })
-  const responseOrderIdNull = await request.delete(`${BASE_URL}/null`,  { headers })
-  const responseOrderIdTest = await request.delete(`${BASE_URL}/test`,  { headers })
+  const responseOrderId0 = await request.delete(`${BASE_URL}/0`, { headers })
+  const responseOrderId11 = await request.delete(`${BASE_URL}/11`, { headers })
+  const responseOrderIdNull = await request.delete(`${BASE_URL}/null`, { headers })
+  const responseOrderIdTest = await request.delete(`${BASE_URL}/test`, { headers })
 
   expect(responseOrderId0.status()).toBe(StatusCodes.BAD_REQUEST)
   expect(responseOrderId11.status()).toBe(StatusCodes.BAD_REQUEST)
