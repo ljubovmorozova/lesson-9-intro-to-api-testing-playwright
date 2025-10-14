@@ -107,29 +107,39 @@ test('put order with incorrect id should receive 400', async ({ request }) => {
     comment: 'update via test',
   }
 
-  const headers = {
-    Accept: '*/*',
-    'Content-Type': 'application/json',
-    api_key: process.env.API_KEY ?? '1234567890123456',
-  }
-
   const resId0 = await request.put(`${BASE_URL}/0`, {
-    headers: headers,
+    headers: {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+      api_key: process.env.API_KEY ?? '1234567890123456',
+    },
     data: requestBody,
   })
 
   const resId11 = await request.put(`${BASE_URL}/11`, {
-    headers: headers,
+    headers: {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+      api_key: process.env.API_KEY ?? '1234567890123456',
+    },
     data: requestBody,
   })
 
   const resIdNull = await request.put(`${BASE_URL}/`, {
-    headers: headers,
+    headers: {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+      api_key: process.env.API_KEY ?? '1234567890123456',
+    },
     data: requestBody,
   })
 
   const resIdTest = await request.put(`${BASE_URL}/test`, {
-    headers: headers,
+    headers: {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+      api_key: process.env.API_KEY ?? '1234567890123456',
+    },
     data: requestBody,
   })
 
