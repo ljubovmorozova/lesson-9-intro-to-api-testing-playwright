@@ -25,11 +25,11 @@ test('post order with correct data should receive code 200', async ({ request })
   // prepare request body
   const requestBody = {
     status: 'OPEN',
-    courierId: 0,
+    courierId: 1,
     customerName: 'string',
     customerPhone: 'string',
     comment: 'string',
-    id: 0,
+    id: 1,
   }
   // Send a POST request to the server
   const response = await request.post(BASE_URL, {
@@ -41,10 +41,115 @@ test('post order with correct data should receive code 200', async ({ request })
   expect(response.status()).toBe(StatusCodes.OK)
 })
 
-// if (true) {
-//
-// } else {
-//
-// }
-//
-// true ? {} : {}
+test('delete order with correct id should receive 204', async ({ request }) => {
+  const headers = {
+    Accept: '*/*',
+    api_key: process.env.API_KEY ?? '1234567890123456',
+  }
+
+  const id = 1
+  const res = await request.delete(`${BASE_URL}/${id}`, { headers })
+  expect(res.status()).toBe(StatusCodes.NO_CONTENT)
+})
+
+test('delete order with incorrect id should receive code 400', async ({ request }) => {
+  const headers = {
+    Accept: '*/*',
+    api_key: process.env.API_KEY ?? '1234567890123456',
+  }
+
+  const responseOrderId0 = await request.delete(`${BASE_URL}/0`, { headers })
+  const responseOrderId11 = await request.delete(`${BASE_URL}/11`, { headers })
+  const responseOrderIdNull = await request.delete(`${BASE_URL}/null`, { headers })
+  const responseOrderIdTest = await request.delete(`${BASE_URL}/test`, { headers })
+
+  expect(responseOrderId0.status()).toBe(StatusCodes.BAD_REQUEST)
+  expect(responseOrderId11.status()).toBe(StatusCodes.BAD_REQUEST)
+  expect(responseOrderIdNull.status()).toBe(StatusCodes.BAD_REQUEST)
+  expect(responseOrderIdTest.status()).toBe(StatusCodes.BAD_REQUEST)
+})
+
+test('DELETE with invalid api_key length → 401', async ({ request }) => {
+  const res = await request.delete(`${BASE_URL}/1`, {
+    headers: { Accept: '*/*', api_key: '12345' },
+  })
+  expect(res.status()).toBe(StatusCodes.UNAUTHORIZED)
+})
+
+test('put order with correct id should receive 200', async ({ request }) => {
+  const id = 1
+
+  const requestBody = {
+    status: 'OPEN',
+    courierId: 1,
+    customerName: 'John Doe',
+    customerPhone: '+3725550000',
+    comment: 'update via test',
+  }
+
+  const res = await request.put(`${BASE_URL}/${id}`, {
+    headers: {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+      api_key: process.env.API_KEY ?? '1234567890123456',
+    },
+    data: requestBody,
+  })
+  expect(res.status()).toBe(StatusCodes.OK)
+})
+
+test('put order with incorrect id should receive 400', async ({ request }) => {
+  const headers = {
+    Accept: '*/*',
+    api_key: process.env.API_KEY ?? '1234567890123456',
+  }
+  const requestBody = {
+    status: 'OPEN',
+    courierId: 1,
+    customerName: 'John Doe',
+    customerPhone: '+3725550000',
+    comment: 'update via test',
+  }
+
+  const resId0 = await request.put(`${BASE_URL}/0`, {
+    headers: headers,
+    data: requestBody,
+  })
+
+  const resId11 = await request.put(`${BASE_URL}/11`, {
+    headers: headers,
+    data: requestBody,
+  })
+
+  const resIdNull = await request.put(`${BASE_URL}/`, {
+    headers: headers,
+    data: requestBody,
+  })
+
+  const resIdTest = await request.put(`${BASE_URL}/test`, {
+    headers: headers,
+    data: requestBody,
+  })
+
+  expect(resId0.status()).toBe(StatusCodes.BAD_REQUEST)
+  expect(resId11.status()).toBe(StatusCodes.BAD_REQUEST)
+  expect(resIdNull.status()).toBe(StatusCodes.METHOD_NOT_ALLOWED)
+  expect(resIdTest.status()).toBe(StatusCodes.BAD_REQUEST)
+})
+
+test('put when api_key invalid should receive 401', async ({ request }) => {
+  const requestBody = {
+    status: 'OPEN',
+    courierId: 1,
+    customerName: 'string',
+    customerPhone: 'string',
+    comment: 'string',
+  }
+  const noKey = await request.put(`${BASE_URL}/1`, {
+    headers: {
+      api_key: '12345',
+    },
+    data: requestBody,
+  })
+  expect(noKey.status()).toBe(StatusCodes.UNAUTHORIZED)
+})
