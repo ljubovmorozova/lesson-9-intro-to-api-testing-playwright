@@ -1,10 +1,10 @@
 export class ApplicantDTO {
-  income: number;
-  debt: number;
-  age: number;
-  employed: boolean;
-  loanAmount: number;
-  loanPeriod: number;
+  income: number
+  debt: number
+  age: number
+  employed: boolean
+  loanAmount: number
+  loanPeriod: number
 
   constructor(
     income: number,
@@ -12,13 +12,13 @@ export class ApplicantDTO {
     age: number,
     employed: boolean,
     loanAmount: number,
-    loanPeriod: number
+    loanPeriod: number,
   ) {
-    this.income = income;
-    this.debt = debt;
-    this.age = age;
-    this.employed = employed;
-    this.loanAmount = loanAmount;
-    this.loanPeriod= loanPeriod;
+    this.income = income
+    this.debt = debt
+    this.age = age
+    this.employed = employed
+    this.loanAmount = loanAmount
+    this.loanPeriod = loanPeriod
   }
 }
