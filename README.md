@@ -16,3 +16,11 @@
 | 12  | DELETE   | Delete order with missing `orderId`                   | `orderId = null`                         |
 | 13  | DELETE   | Delete order with incorrect `orderId` format          | `orderId = 'test'`                       |
 | 14  | DELETE   | DELETE with invalid `api_key` length → 401            | header `api_key = '12345'` (≠ 16 digits) |
+
+### Checklist: POST /loan/calc/decision
+| #  | Endpoint | Scenario                                               | Test Data                                                                          | Expected Result                                |
+| -- | -------- |--------------------------------------------------------|------------------------------------------------------------------------------------|------------------------------------------------|
+| 1  | POST     | Low risk, positive decision                            | `income=20000, debt=0, age=30, employed=true, loanAmount=500, loanPeriod=12`       | `200 OK`, `riskLevel=Low risk`                 |
+| 2  | POST     | Medium risk                                            | `income=20000, debt=0, age=30, employed=true, loanAmount=500, loanPeriod=6`        | `200 OK`, `riskLevel=Medium risk`              |
+| 3  | POST     | Very high risk, negative decision                      | `income=100, debt=0, age=17, employed=true, loanAmount=1000, loanPeriod=12`        | `200 OK`, `riskLevel=High risk`                |
+
